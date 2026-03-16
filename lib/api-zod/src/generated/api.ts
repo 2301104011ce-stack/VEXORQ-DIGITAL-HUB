@@ -14,3 +14,15 @@ import * as zod from "zod";
 export const HealthCheckResponse = zod.object({
   status: zod.string(),
 });
+
+/**
+ * Submit a website development query to VEXORQ
+ * @summary Submit a website query
+ */
+export const SubmitQueryBody = zod.object({
+  fullName: zod.string(),
+  email: zod.string(),
+  phone: zod.string(),
+  websiteType: zod.string(),
+  description: zod.string(),
+});

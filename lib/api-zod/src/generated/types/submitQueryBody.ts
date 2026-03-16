@@ -5,9 +5,6 @@
  * API specification
  * OpenAPI spec version: 0.1.0
  */
-export interface HealthStatus {
-  status: string;
-}
 
 export interface SubmitQueryBody {
   fullName: string;
@@ -15,14 +12,4 @@ export interface SubmitQueryBody {
   phone: string;
   websiteType: string;
   description: string;
-}
-
-export interface QueryResponse {
-  success: boolean;
-  message: string;
-  id: number;
-}
-
-export interface ErrorResponse {
-  error: string;
 }

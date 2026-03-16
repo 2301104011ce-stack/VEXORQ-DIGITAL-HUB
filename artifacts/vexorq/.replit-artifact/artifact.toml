@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "VEXORQ"
+version = "1.0.0"
+id = "artifacts/vexorq"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+localPort = 18303
+name = "web"
+paths = ["/"]
+
+[services.development]
+run = "pnpm --filter @workspace/vexorq run dev"
+
+[services.env]
+PORT = "18303"
+BASE_PATH = "/"
+
+[services.production]
+build = ["pnpm", "--filter", "@workspace/vexorq", "run", "build"]
+publicDir = "artifacts/vexorq/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"

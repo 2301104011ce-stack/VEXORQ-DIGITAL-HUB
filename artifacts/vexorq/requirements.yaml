@@ -1,0 +1,20 @@
+packages:
+  "framer-motion": "For high-quality page transitions and scroll animations"
+  "react-hook-form": "For robust form state management"
+  "@hookform/resolvers": "For Zod schema validation integration"
+  "zod": "For form validation schema definition"
+  "clsx": "For conditional class names"
+  "tailwind-merge": "For merging tailwind classes safely"
+
+images:
+  - path: "artifacts/vexorq/public/images/hero-bg.png"
+    description: "Abstract dark tech background with subtle glowing cyan grid lines and deep slate gradients, minimalist and highly professional"
+    aspect_ratio: "16:9"
+  - path: "artifacts/vexorq/public/images/logo-mark.png"
+    description: "A minimalist, sharp glowing cyan letter V icon on a transparent background, high tech aesthetic"
+    aspect_ratio: "1:1"
+
+notes:
+  - using generated useSubmitQuery hook from @workspace/api-client-react
+  - single page application with smooth scroll anchor links
+  - dark theme defaults enforced
