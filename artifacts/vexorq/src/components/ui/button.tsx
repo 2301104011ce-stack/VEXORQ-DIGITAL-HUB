@@ -39,16 +39,40 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant, size, isLoading, children, disabled, asChild = false, ...props }, ref) => {
     const Comp = asChild ? Slot : "button";
 
-    return (
-      <Comp
-        ref={ref}
-        disabled={isLoading || disabled}
-        className={cn(buttonVariants({ variant, size, className }))}
-        {...props}
-      >
+    // Build the className with all variants
+    const finalClassName = cn(buttonVariants({ variant, size, className }));
+
+    // When asChild is true, Slot merges props into the child element
+    // So we only pass the mergedChildren (without extra wrappers)
+    const childContent = (
+      <>
         {isLoading && <Loader2 className="mr-2 h-5 w-5 animate-spin" />}
         {children}
-      </Comp>
+      </>
+    );
+
+    if (asChild) {
+      return (
+        <Comp
+          ref={ref}
+          className={finalClassName}
+          disabled={isLoading || disabled}
+          {...props}
+        >
+          {children}
+        </Comp>
+      );
+    }
+
+    return (
+      <button
+        ref={ref}
+        disabled={isLoading || disabled}
+        className={finalClassName}
+        {...props}
+      >
+        {childContent}
+      </button>
     );
   }
 );
