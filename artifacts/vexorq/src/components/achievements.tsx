@@ -100,15 +100,53 @@ export function Achievements() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 
         {/* Stats Row */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 text-center">
-          {stats.map((stat, index) => (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 items-start">
+
+          {/* First card — Multiple Projects Accomplished */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="flex flex-col items-center text-center"
+          >
+            <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-5">
+              <CheckCircle2 className="w-8 h-8 text-primary" />
+            </div>
+            <p className="text-sm font-semibold text-primary uppercase tracking-widest mb-4">Projects Accomplished</p>
+            <div className="w-full space-y-2">
+              {[
+                { label: "Business Websites", count: "320+", color: "text-cyan-400", bg: "bg-cyan-500/10 border-cyan-500/20" },
+                { label: "E-Commerce Stores", count: "210+", color: "text-violet-400", bg: "bg-violet-500/10 border-violet-500/20" },
+                { label: "Web Applications",  count: "180+", color: "text-pink-400",   bg: "bg-pink-500/10 border-pink-500/20" },
+                { label: "Portfolios & Blogs", count: "150+", color: "text-emerald-400",bg: "bg-emerald-500/10 border-emerald-500/20" },
+                { label: "Redesign Projects",  count: "140+", color: "text-amber-400",  bg: "bg-amber-500/10 border-amber-500/20" },
+              ].map((item, i) => (
+                <motion.div
+                  key={i}
+                  initial={{ opacity: 0, x: -12 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: 0.1 + i * 0.07 }}
+                  className={`flex items-center justify-between px-3 py-2 rounded-lg border ${item.bg} text-left`}
+                >
+                  <span className="text-xs text-muted-foreground">{item.label}</span>
+                  <span className={`text-xs font-bold ${item.color}`}>{item.count}</span>
+                </motion.div>
+              ))}
+            </div>
+            <p className="text-muted-foreground font-medium mt-4 text-sm">Successfully Delivered Projects</p>
+          </motion.div>
+
+          {/* Remaining 3 stats */}
+          {stats.slice(1).map((stat, index) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, scale: 0.9 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="flex flex-col items-center"
+              transition={{ duration: 0.5, delay: (index + 1) * 0.1 }}
+              className="flex flex-col items-center text-center"
             >
               <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-6">
                 <stat.icon className="w-8 h-8 text-primary" />
