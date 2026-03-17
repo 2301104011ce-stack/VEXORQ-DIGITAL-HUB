@@ -63,13 +63,31 @@ export function QueryForm() {
             className="space-y-6"
           >
             <h2 className="text-4xl md:text-5xl font-display font-bold leading-tight">
-              Create Your <br/><span className="text-gradient">Website With Us</span>
+              For Enquiry, <br/><span className="text-gradient">Get In Touch With Us</span>
             </h2>
             <p className="text-lg text-muted-foreground leading-relaxed">
-              Want to build your website? Drop your query below. Our team will review your requirement and contact you soon. 
-              <br/><br/>
-              Your query will be directly sent to our priority mailbox for immediate assessment.
+              We successfully create <strong className="text-white">websites</strong> and <strong className="text-white">web applications</strong> tailored to your needs — and we provide our services on an <strong className="text-white">annual maintenance basis</strong> so your platform stays up-to-date year-round.
             </p>
+            <div className="space-y-4 mt-2">
+              <div className="flex items-start gap-3">
+                <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center shrink-0 mt-0.5">
+                  <svg className="w-3.5 h-3.5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                </div>
+                <p className="text-muted-foreground">Fill the enquiry form — our team will get back to you <strong className="text-white">soon</strong> to discuss your requirements.</p>
+              </div>
+              <div className="flex items-start gap-3">
+                <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center shrink-0 mt-0.5">
+                  <svg className="w-3.5 h-3.5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                </div>
+                <p className="text-muted-foreground">You can <strong className="text-white">choose your own domain</strong> — we handle everything from registration to deployment, all yours, all under your control.</p>
+              </div>
+              <div className="flex items-start gap-3">
+                <div className="w-6 h-6 rounded-full bg-primary/20 flex items-center justify-center shrink-0 mt-0.5">
+                  <svg className="w-3.5 h-3.5 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                </div>
+                <p className="text-muted-foreground">Your query goes directly to our priority mailbox — <strong className="text-white">just reach out and we take care of the rest.</strong></p>
+              </div>
+            </div>
           </motion.div>
 
           <motion.div
