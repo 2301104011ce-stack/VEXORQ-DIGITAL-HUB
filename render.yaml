@@ -2,8 +2,10 @@ services:
   - type: web
     name: vexorq-api
     runtime: node
-    buildCommand: pnpm install && pnpm --filter @workspace/api-server run build
-    startCommand: cd artifacts/api-server && node dist/index.cjs
+    buildCommand: corepack enable && pnpm install --frozen-lockfile && pnpm --filter @workspace/api-server run build
+    preDeployCommand: pnpm --filter @workspace/db run push
+    startCommand: node artifacts/api-server/dist/index.cjs
+    healthCheckPath: /api/healthz
     envVars:
       - key: DATABASE_URL
         fromDatabase:
@@ -16,6 +18,21 @@ services:
       - key: SMTP_USER
         sync: false
       - key: SMTP_PASS
+        sync: false
+      - key: SMTP_FROM
+        sync: false
+
+  - type: web
+    name: vexorq-web
+    runtime: static
+    buildCommand: corepack enable && pnpm install --frozen-lockfile && pnpm --filter @workspace/vexorq run build
+    staticPublishPath: artifacts/vexorq/dist
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    envVars:
+      - key: VITE_API_URL
         sync: false
 
 databases:

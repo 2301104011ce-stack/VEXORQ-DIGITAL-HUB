@@ -5,6 +5,7 @@ import { Achievements } from "@/components/achievements";
 import { Reviews } from "@/components/reviews";
 import { QueryForm } from "@/components/query-form";
 import { Faq } from "@/components/faq";
+import { HowWeWork } from "@/components/how-we-work";
 import { Footer } from "@/components/footer";
 
 export default function Home() {
@@ -18,6 +19,7 @@ export default function Home() {
         <Reviews />
         <QueryForm />
         <Faq />
+        <HowWeWork />
       </main>
       <Footer />
     </div>
