@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: vexorq-api
+    runtime: node
+    buildCommand: pnpm install && pnpm --filter @workspace/api-server run build
+    startCommand: cd artifacts/api-server && node dist/index.cjs
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: vexorq-db
+          property: connectionString
+      - key: SMTP_HOST
+        value: smtp.gmail.com
+      - key: SMTP_PORT
+        value: 587
+      - key: SMTP_USER
+        sync: false
+      - key: SMTP_PASS
+        sync: false
+
+databases:
+  - name: vexorq-db
+    databaseName: vexorq
+    user: vexorq_user

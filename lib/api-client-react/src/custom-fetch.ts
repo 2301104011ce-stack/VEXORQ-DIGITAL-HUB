@@ -9,6 +9,15 @@ export type BodyType<T> = T;
 const NO_BODY_STATUS = new Set([204, 205, 304]);
 const DEFAULT_JSON_ACCEPT = "application/json, application/problem+json";
 
+// Get API base URL from environment or use relative paths
+function getApiBaseUrl(): string {
+  const envApiUrl = (import.meta as any).env?.VITE_API_URL;
+  if (envApiUrl && envApiUrl.trim()) {
+    return envApiUrl;
+  }
+  return "";
+}
+
 function isRequest(input: RequestInfo | URL): input is Request {
   return typeof Request !== "undefined" && input instanceof Request;
 }
@@ -283,6 +292,15 @@ export async function customFetch<T = unknown>(
     throw new TypeError(`customFetch: ${method} requests cannot have a body.`);
   }
 
+  // Resolve the URL with API base URL if needed
+  let resolvedUrl = resolveUrl(input);
+  if (resolvedUrl.startsWith("/api") && !resolvedUrl.startsWith("http")) {
+    const baseUrl = getApiBaseUrl();
+    if (baseUrl) {
+      resolvedUrl = `${baseUrl}${resolvedUrl}`;
+    }
+  }
+
   const headers = mergeHeaders(isRequest(input) ? input.headers : undefined, headersInit);
 
   if (
@@ -297,9 +315,9 @@ export async function customFetch<T = unknown>(
     headers.set("accept", DEFAULT_JSON_ACCEPT);
   }
 
-  const requestInfo = { method, url: resolveUrl(input) };
+  const requestInfo = { method, url: resolvedUrl };
 
-  const response = await fetch(input, { ...init, method, headers });
+  const response = await fetch(resolvedUrl, { ...init, method, headers });
 
   if (!response.ok) {
     const errorData = await parseErrorBody(response, method);
