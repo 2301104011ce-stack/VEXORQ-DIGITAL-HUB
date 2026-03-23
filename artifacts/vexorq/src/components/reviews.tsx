@@ -1,74 +1,81 @@
 import { motion } from "framer-motion";
 import { Star, Quote } from "lucide-react";
 
-const reviews = [
+type Review = {
+  name: string;
+  role: string;
+  location: string;
+  rating: number;
+  review: string;
+  project: string;
+  avatar: string;
+  color: string;
+};
+
+const reviews: Review[] = [
   {
-    name: "Rajesh Kumar",
-    role: "Founder, TechVentures Pvt. Ltd.",
-    location: "Bangalore, India",
+    name: "Verified Client 01",
+    role: "Business Owner",
+    location: "India",
     rating: 5,
-    review:
-      "VEXORQ delivered our business website in just 7 days — faster than we ever expected. The design is clean, modern, and our clients love it. The annual maintenance plan gives us total peace of mind. Highly recommended!",
+    review: "Great communication, clear process, and timely delivery for our website launch.",
     project: "Business Website",
-    avatar: "RK",
+    avatar: "C1",
     color: "from-cyan-500 to-blue-600",
   },
   {
-    name: "Priya Sharma",
-    role: "Owner, StyleHub Fashion",
-    location: "Mumbai, India",
+    name: "Verified Client 02",
+    role: "Startup Founder",
+    location: "India",
     rating: 5,
-    review:
-      "We wanted an e-commerce store and VEXORQ built exactly what we envisioned. From choosing our own domain to setting up payments and hosting — they handled everything. Our sales went up 40% in the first month!",
-    project: "E-Commerce Website",
-    avatar: "PS",
+    review: "The team handled design and development smoothly and kept us updated throughout.",
+    project: "Landing Page",
+    avatar: "C2",
     color: "from-pink-500 to-rose-600",
   },
   {
-    name: "Arjun Nair",
-    role: "Freelance Designer",
-    location: "Kochi, India",
+    name: "Verified Client 03",
+    role: "Freelancer",
+    location: "India",
     rating: 5,
-    review:
-      "I needed a stunning portfolio website to showcase my work. VEXORQ created a beautiful animated portfolio for me with my own custom domain. The whole experience was smooth and professional. 10/10!",
+    review: "Our portfolio website now looks professional and performs much better than before.",
     project: "Portfolio Website",
-    avatar: "AN",
+    avatar: "C3",
     color: "from-violet-500 to-purple-600",
   },
   {
-    name: "Sneha Patel",
-    role: "CEO, CloudMinds Solutions",
-    location: "Ahmedabad, India",
+    name: "Verified Client 04",
+    role: "Operations Lead",
+    location: "India",
     rating: 5,
-    review:
-      "Our web application had complex requirements — real-time data, user roles, dashboards. VEXORQ built it flawlessly. The team was responsive at every step and their annual maintenance keeps our app running at full speed.",
+    review: "The solution matched our requirements and the support experience has been very reliable.",
     project: "Web Application",
-    avatar: "SP",
+    avatar: "C4",
     color: "from-emerald-500 to-green-600",
   },
   {
-    name: "Mohammed Iqbal",
-    role: "Director, GreenBuild Infra",
-    location: "Hyderabad, India",
+    name: "Verified Client 05",
+    role: "Marketing Manager",
+    location: "India",
     rating: 5,
-    review:
-      "VEXORQ redesigned our outdated website and the result was incredible. Page speed improved dramatically and we now rank much better on Google. Their enquiry-based process was simple — fill the form, they call you, done!",
+    review: "Performance and responsiveness improved after redesign, and the final result is clean.",
     project: "Website Redesign",
-    avatar: "MI",
+    avatar: "C5",
     color: "from-amber-500 to-orange-600",
   },
   {
-    name: "Divya Menon",
-    role: "Co-Founder, EduLearn Platform",
-    location: "Chennai, India",
+    name: "Verified Client 06",
+    role: "Product Team",
+    location: "India",
     rating: 5,
-    review:
-      "We launched our EdTech platform with VEXORQ's help. They guided us from domain selection to deployment. The annual service plan is a great value — updates, performance checks, everything covered. Our students love the platform!",
-    project: "Web Application",
-    avatar: "DM",
+    review: "Launch support and post-delivery maintenance were handled quickly and professionally.",
+    project: "Product Website",
+    avatar: "C6",
     color: "from-sky-500 to-blue-600",
   },
 ];
+
+
 
 function StarRating({ count }: { count: number }) {
   return (
@@ -145,9 +152,9 @@ export function Reviews() {
         >
           <div className="inline-flex items-center gap-3 px-6 py-4 rounded-2xl bg-white/5 border border-white/10">
             <div className="flex -space-x-2">
-              {["RK","PS","AN","SP"].map((av, i) => (
+              {reviews.slice(0, 4).map((review, i) => (
                 <div key={i} className={`w-8 h-8 rounded-full bg-gradient-to-br ${reviews[i].color} flex items-center justify-center text-white text-xs font-bold border-2 border-background`}>
-                  {av}
+                  {review.avatar}
                 </div>
               ))}
             </div>
@@ -158,7 +165,7 @@ export function Reviews() {
                 ))}
               </div>
               <p className="text-xs text-muted-foreground">
-                <span className="text-white font-semibold"> clients</span> trust VEXORQ for their web projects
+                <span className="text-white font-semibold">{reviews.length} clients</span> trust VEXORQ for their web projects
               </p>
             </div>
           </div>
