@@ -1,9 +1,29 @@
 import { Router, type IRouter } from "express";
 import { db, queriesTable } from "@workspace/db";
+import { sql } from "drizzle-orm";
 import { SubmitQueryBody } from "@workspace/api-zod";
 import { sendQueryEmail } from "../lib/email";
 
 const router: IRouter = Router();
+let queriesTableReady = false;
+
+async function ensureQueriesTable() {
+  if (queriesTableReady) return;
+
+  await db.execute(sql`
+    CREATE TABLE IF NOT EXISTS queries (
+      id SERIAL PRIMARY KEY,
+      full_name TEXT NOT NULL,
+      email TEXT NOT NULL,
+      phone TEXT NOT NULL,
+      website_type TEXT NOT NULL,
+      description TEXT NOT NULL,
+      created_at TIMESTAMP NOT NULL DEFAULT NOW()
+    )
+  `);
+
+  queriesTableReady = true;
+}
 
 router.post("/queries", async (req, res) => {
   const parsed = SubmitQueryBody.safeParse(req.body);
@@ -15,6 +35,8 @@ router.post("/queries", async (req, res) => {
   const { fullName, email, phone, websiteType, description } = parsed.data;
 
   try {
+    await ensureQueriesTable();
+
     // Save to database
     const [inserted] = await db.insert(queriesTable).values({
       fullName,
