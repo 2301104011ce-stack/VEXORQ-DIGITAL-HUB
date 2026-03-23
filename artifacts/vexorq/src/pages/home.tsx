@@ -2,7 +2,6 @@ import { Navbar } from "@/components/navbar";
 import { Hero } from "@/components/hero";
 import { Services } from "@/components/services";
 import { Achievements } from "@/components/achievements";
-import { Reviews } from "@/components/reviews";
 import { QueryForm } from "@/components/query-form";
 import { Faq } from "@/components/faq";
 import { HowWeWork } from "@/components/how-we-work";
@@ -16,7 +15,6 @@ export default function Home() {
         <Hero />
         <Services />
         <Achievements />
-        <Reviews />
         <QueryForm />
         <Faq />
         <HowWeWork />
