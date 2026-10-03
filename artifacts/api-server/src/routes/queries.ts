@@ -8,6 +8,7 @@ import {
   getAllQueries,
   getAllUploads,
   getContactsExcelBuffer,
+  clearAllStorage,
 } from "../lib/storage";
 import { requireAdminSecret } from "../lib/auth";
 
@@ -133,4 +134,14 @@ router.get("/sync", requireAdminSecret, (_req: Request, res: Response) => {
   });
 });
 
+// POST /api/admin/clear - protected (Admin only: reset all contacts, uploads, and images)
+router.post("/admin/clear", requireAdminSecret, (_req: Request, res: Response) => {
+  clearAllStorage();
+  res.json({
+    success: true,
+    message: "All database records, images, and contact form submissions cleared successfully.",
+  });
+});
+
 export default router;
+
