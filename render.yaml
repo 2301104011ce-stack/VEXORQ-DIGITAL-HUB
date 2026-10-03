@@ -2,7 +2,7 @@ services:
   - type: web
     name: vexorq-api
     runtime: node
-    buildCommand: corepack enable && pnpm install --frozen-lockfile && pnpm --filter @workspace/api-server run build
+    buildCommand: pnpm install --frozen-lockfile && pnpm --filter @workspace/api-server run build
     startCommand: node artifacts/api-server/dist/index.cjs
     healthCheckPath: /api/healthz
     envVars:
@@ -24,7 +24,7 @@ services:
   - type: web
     name: vexorq-web
     runtime: static
-    buildCommand: corepack enable && pnpm install --frozen-lockfile && pnpm --filter @workspace/vexorq run build
+    buildCommand: pnpm install --frozen-lockfile && pnpm --filter @workspace/vexorq run build
     staticPublishPath: artifacts/vexorq/dist
     routes:
       - type: rewrite
