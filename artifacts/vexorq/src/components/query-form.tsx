@@ -179,7 +179,7 @@ export function QueryForm() {
                 {errors.description && <p className="text-red-400 text-xs mt-1">{errors.description.message}</p>}
               </div>
 
-              <Button type="submit" className="w-full h-14 text-lg mt-4" isLoading={submitQueryMutation.isPending || isSubmitting}>
+              <Button type="submit" className="w-full h-14 text-lg mt-4" isLoading={isSubmitting}>
                 <Send className="mr-2 h-5 w-5" />
                 Send Query
               </Button>
