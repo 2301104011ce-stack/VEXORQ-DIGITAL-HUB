@@ -4,22 +4,18 @@ import * as schema from "./schema";
 
 const { Pool } = pg;
 
-if (!process.env.DATABASE_URL) {
-  throw new Error(
-    "DATABASE_URL must be set. Did you forget to provision a database?",
-  );
-}
-
-const connectionString = process.env.DATABASE_URL;
+const connectionString = process.env.DATABASE_URL || "";
 const sslRequired =
   process.env.DATABASE_SSL === "true" ||
   connectionString.includes("sslmode=require") ||
   connectionString.includes("render.com");
 
-export const pool = new Pool({
-  connectionString,
-  ssl: sslRequired ? { rejectUnauthorized: false } : undefined,
-});
-export const db = drizzle(pool, { schema });
+export const pool = connectionString
+  ? new Pool({
+      connectionString,
+      ssl: sslRequired ? { rejectUnauthorized: false } : undefined,
+    })
+  : null;
+export const db = pool ? drizzle(pool, { schema }) : (null as any);
 
 export * from "./schema";

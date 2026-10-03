@@ -31,11 +31,7 @@ export function Footer() {
               </li>
               <li className="flex items-start gap-3 text-muted-foreground hover:text-white transition-colors">
                 <MapPin className="w-5 h-5 text-primary shrink-0 mt-0.5" />
-                <span>
-                  QR.NO: IV-31/4<br />
-                  Bhubaneswar – 751009<br />
-                  Odisha, India
-                </span>
+                <span>Bhubaneswar, Odisha</span>
               </li>
             </ul>
           </div>
@@ -47,6 +43,17 @@ export function Footer() {
               <li><a href="#achievements" className="text-muted-foreground hover:text-primary transition-colors">Achievements</a></li>
               <li><a href="#query" className="text-muted-foreground hover:text-primary transition-colors">Start a Project</a></li>
               <li><a href="#faq" className="text-muted-foreground hover:text-primary transition-colors">FAQ</a></li>
+              <li className="pt-2 border-t border-white/5">
+                <a
+                  href="/upload"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-primary hover:text-primary/80 font-medium transition-colors"
+                >
+                  <span>Upload Document / Photo</span>
+                  <span className="text-xs px-2 py-0.5 rounded-full bg-primary/20 text-primary border border-primary/30">JPG</span>
+                </a>
+              </li>
             </ul>
           </div>
 
