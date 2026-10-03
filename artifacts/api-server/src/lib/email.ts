@@ -26,6 +26,10 @@ export const sendQueryEmail = async (
   description: string,
   recipientEmail: string = "d2684066@gmail.com"
 ) => {
+  if (!process.env.SMTP_USER || !process.env.SMTP_PASS) {
+    return;
+  }
+
   try {
     const transporter = createTransport();
 

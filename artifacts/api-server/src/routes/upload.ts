@@ -8,6 +8,7 @@ import {
   getUploadsDirectory,
   getUploadsExcelBuffer,
 } from "../lib/storage";
+import { requireAdminSecret } from "../lib/auth";
 
 const router: IRouter = Router();
 
@@ -70,6 +71,24 @@ router.post("/upload", (req: Request, res: Response) => {
       return;
     }
 
+    // Security check: Validate file magic bytes (JPEG signature: FF D8 FF)
+    try {
+      const fd = fs.openSync(req.file.path, "r");
+      const buffer = Buffer.alloc(3);
+      fs.readSync(fd, buffer, 0, 3, 0);
+      fs.closeSync(fd);
+      if (buffer[0] !== 0xff || buffer[1] !== 0xd8 || buffer[2] !== 0xff) {
+        fs.unlinkSync(req.file.path);
+        res.status(400).json({
+          success: false,
+          error: "Security rejection: File is not a genuine JPG/JPEG image.",
+        });
+        return;
+      }
+    } catch {
+      // Continue if check cannot complete
+    }
+
     const comment = (req.body.comment || "").trim();
     const uploaderName = (req.body.name || req.body.fullName || "").trim();
     const uploaderContact = (req.body.contact || req.body.email || req.body.phone || "").trim();
@@ -99,8 +118,8 @@ router.post("/upload", (req: Request, res: Response) => {
   });
 });
 
-// GET /api/uploads - list all uploads
-router.get("/uploads", (_req: Request, res: Response) => {
+// GET /api/uploads - protected (Admin/Sync only)
+router.get("/uploads", requireAdminSecret, (_req: Request, res: Response) => {
   const uploads = getAllUploads();
   res.json({
     success: true,
@@ -109,8 +128,8 @@ router.get("/uploads", (_req: Request, res: Response) => {
   });
 });
 
-// GET /api/uploads/file/:filename - serve the uploaded image
-router.get("/uploads/file/:filename", (req: Request, res: Response) => {
+// GET /api/uploads/file/:filename - protected (Admin/Sync only)
+router.get("/uploads/file/:filename", requireAdminSecret, (req: Request, res: Response) => {
   const filename = path.basename(req.params.filename);
   const filePath = path.join(uploadsDir, filename);
 
@@ -123,8 +142,8 @@ router.get("/uploads/file/:filename", (req: Request, res: Response) => {
   res.sendFile(filePath);
 });
 
-// GET /api/export/uploads - download Excel file
-router.get("/export/uploads", (_req: Request, res: Response) => {
+// GET /api/export/uploads - protected (Admin only)
+router.get("/export/uploads", requireAdminSecret, (_req: Request, res: Response) => {
   try {
     const buffer = getUploadsExcelBuffer();
     res.setHeader(

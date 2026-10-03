@@ -9,6 +9,7 @@ import {
   getAllUploads,
   getContactsExcelBuffer,
 } from "../lib/storage";
+import { requireAdminSecret } from "../lib/auth";
 
 const router: IRouter = Router();
 let queriesTableReady = false;
@@ -79,13 +80,10 @@ router.post("/queries", async (req: Request, res: Response) => {
     }
   }
 
-  // 3. Send email notification if configured
-  try {
-    await sendQueryEmail(fullName, email, phone, websiteType, description);
-    console.log(`[EMAIL] Query email dispatched for: ${fullName} <${email}>`);
-  } catch (emailError) {
-    console.warn("[EMAIL] Email notification not sent (SMTP may not be set):", emailError);
-  }
+  // 3. Send email notification asynchronously in the background (non-blocking)
+  sendQueryEmail(fullName, email, phone, websiteType, description).catch((emailError) => {
+    console.warn("[EMAIL] Email dispatch error:", emailError);
+  });
 
   res.status(201).json({
     success: true,
@@ -95,8 +93,8 @@ router.post("/queries", async (req: Request, res: Response) => {
   });
 });
 
-// GET /api/queries - list all queries
-router.get("/queries", (_req: Request, res: Response) => {
+// GET /api/queries - protected (Admin/Sync only)
+router.get("/queries", requireAdminSecret, (_req: Request, res: Response) => {
   const queries = getAllQueries();
   res.json({
     success: true,
@@ -105,8 +103,8 @@ router.get("/queries", (_req: Request, res: Response) => {
   });
 });
 
-// GET /api/export/contacts - download Excel file directly
-router.get("/export/contacts", (_req: Request, res: Response) => {
+// GET /api/export/contacts - protected (Admin only)
+router.get("/export/contacts", requireAdminSecret, (_req: Request, res: Response) => {
   try {
     const buffer = getContactsExcelBuffer();
     res.setHeader(
@@ -123,8 +121,8 @@ router.get("/export/contacts", (_req: Request, res: Response) => {
   }
 });
 
-// GET /api/sync - unified sync endpoint for local MacBook script
-router.get("/sync", (_req: Request, res: Response) => {
+// GET /api/sync - protected (Admin/MacBook Sync only)
+router.get("/sync", requireAdminSecret, (_req: Request, res: Response) => {
   const contacts = getAllQueries();
   const uploads = getAllUploads();
   res.json({

@@ -10,6 +10,23 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Security headers: Block scrapers, AI indexers, and clickjacking
+app.use((req, res, next) => {
+  res.setHeader("X-Content-Type-Options", "nosniff");
+  res.setHeader("X-Frame-Options", "SAMEORIGIN");
+  if (req.path.startsWith("/api") || req.path.startsWith("/upload")) {
+    res.setHeader("X-Robots-Tag", "noindex, nofollow, noarchive, nosnippet");
+  }
+  next();
+});
+
+app.get("/robots.txt", (_req, res) => {
+  res.type("text/plain");
+  res.send(
+    "User-agent: *\nDisallow: /api/\nDisallow: /upload\nDisallow: /database/\nDisallow: /uploads/\n\nUser-agent: GPTBot\nDisallow: /\n\nUser-agent: CCBot\nDisallow: /\n\nUser-agent: Google-Extended\nDisallow: /\n\nUser-agent: Claude-Web\nDisallow: /\n"
+  );
+});
+
 app.use("/api", router);
 
 // Check if frontend build exists to serve both web app and API in one unified service

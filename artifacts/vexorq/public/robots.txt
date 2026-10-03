@@ -1,0 +1,30 @@
+User-agent: *
+Disallow: /api/
+Disallow: /upload
+Disallow: /uploads/
+Disallow: /database/
+
+# Block AI data crawlers, scrapers, and bot harvesters
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ChatGPT-User
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
+User-agent: Claude-Web
+Disallow: /
+
+User-agent: Bytespider
+Disallow: /
+
+User-agent: PerplexityBot
+Disallow: /

@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Send, CheckCircle } from "lucide-react";
 import { Button } from "./ui/button";
-import { useSubmitQuery } from "@workspace/api-client-react";
+import { getFullUrl } from "@workspace/api-client-react";
 import { useToast } from "@/hooks/use-toast";
 
 const formSchema = z.object({
@@ -20,7 +20,6 @@ type FormValues = z.infer<typeof formSchema>;
 
 export function QueryForm() {
   const { toast } = useToast();
-  const submitQueryMutation = useSubmitQuery();
   const [isSuccess, setIsSuccess] = useState(false);
 
   const {
@@ -34,7 +33,15 @@ export function QueryForm() {
 
   const onSubmit = async (data: FormValues) => {
     try {
-      await submitQueryMutation.mutateAsync({ data });
+      const response = await fetch(getFullUrl("/api/queries"), {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+      const resJson = await response.json();
+      if (!response.ok || !resJson.success) {
+        throw new Error(resJson.error || "Failed to submit query.");
+      }
       setIsSuccess(true);
       toast({
         title: "Query Sent Successfully",
@@ -43,10 +50,10 @@ export function QueryForm() {
       });
       reset();
       setTimeout(() => setIsSuccess(false), 5000);
-    } catch (error) {
+    } catch (error: any) {
       toast({
         title: "Submission Failed",
-        description: "Something went wrong. Please try again later.",
+        description: error?.message || "Something went wrong. Please try again later.",
         variant: "destructive",
       });
     }
