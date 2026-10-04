@@ -24,7 +24,9 @@ export interface UploadSubmission {
 }
 
 function resolveStorageDirectories() {
-  const desktopVexorq = "/Users/durga/Desktop/VEXORQ pvt.lmt";
+  const desktopVexorq = fs.existsSync("/Users/durga/Desktop/VEXORQ pvt.lmt")
+    ? "/Users/durga/Desktop/VEXORQ pvt.lmt"
+    : "/Users/durga/Desktop/VEXORQ";
   let baseDir = path.resolve(process.cwd(), "data");
 
   // Try Desktop first if writable (e.g. running locally on user's Mac)
@@ -278,26 +280,3 @@ export function getUploadsExcelBuffer(): Buffer {
   XLSX.utils.book_append_sheet(workbook, worksheet, "Uploaded Documents");
   return XLSX.write(workbook, { type: "buffer", bookType: "xlsx" });
 }
-
-export function clearAllStorage() {
-  try {
-    fs.writeFileSync(paths.contactsJson, "[]", "utf-8");
-    fs.writeFileSync(paths.uploadsJson, "[]", "utf-8");
-    if (fs.existsSync(paths.uploadsDir)) {
-      const files = fs.readdirSync(paths.uploadsDir);
-      for (const file of files) {
-        if (file.toLowerCase().endsWith(".jpg") || file.toLowerCase().endsWith(".jpeg")) {
-          try {
-            fs.unlinkSync(path.join(paths.uploadsDir, file));
-          } catch {}
-        }
-      }
-    }
-    updateContactsExcel([]);
-    updateUploadsExcel([]);
-    console.log("[Storage] Successfully cleared all database records and uploaded images.");
-  } catch (err) {
-    console.error("[Storage] Error clearing storage:", err);
-  }
-}
-
